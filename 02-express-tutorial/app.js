@@ -1,52 +1,27 @@
-// console.log('Express Tutorial')
-const http = require('http')
+const express = require('express')
+const app = express()
 
-const {readFileSync} = require('fs');
+// req => middleware => res
 
-// get all files
-const homePage = readFileSync('./navbar-app/index.html')
-const homeStyles = readFileSync('./navbar-app/styles.css')
-const homeImage = readFileSync('./navbar-app/logo.svg')
-const homeLogic = readFileSync('./navbar-app/browser-app.js')
+const logger = (req,res,next) =>{
+    const method = req.method;
+    const url = request.url;
+    const time = new Date().getFullYear();
+    console.log(method,url,time);
+    // res.send('Testing')
+    next()
+}
 
-const server = http.createServer((req,res)=>{
-    // console.log('user hit the server');
-    // console.log(req.method)
-    // console.log(req.url)
+app.get('/',logger,(req,res)=>{
 
-
-    const url = req.url;
-    if(url === '/'){
-        res.writeHead(200,{'content-type': 'text/html'})
-        res.write(homePage)
-        res.end()
-    } 
-    else if(url === '/about'){
-        res.writeHead(200,{'content-type': 'text/html'})
-        res.write('<h1>about page</h1>')
-        res.end()
-    }
-    else if(url === '/styles.css'){
-        res.writeHead(200,{'content-type': 'text/css'})
-        res.write(homeStyles)
-        res.end()
-    }
-    else if(url === '/logo.svg'){
-        res.writeHead(404,{'content-type': 'image/svh+xml'})
-        res.write(homeImage)
-        res.end()
-    }
-    else if(url === '/browser-app.js'){
-        res.writeHead(404,{'content-type': 'text/javascript'})
-        res.write(homeLogic)
-        res.end()
-    }else {
-        res.writeHead(404,{'content-type': 'text/html'})
-        res.write('<h1>page not found</h1>')
-        res.end()
-    }
-
-
+    res.send('Home')
 })
 
-server.listen(5000)
+app.get('/about',(req,res)=>{
+    res.send('About')
+})
+
+
+app.listen(500,()=>{
+    console.log('Server is listening on port 5000...');
+})
