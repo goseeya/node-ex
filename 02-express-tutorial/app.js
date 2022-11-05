@@ -1,24 +1,29 @@
 const express = require('express')
 const app = express()
 
-// req => middleware => res
+const logger = require('./logger')
+const authorize = require('./authorize')
 
-const logger = (req,res,next) =>{
-    const method = req.method;
-    const url = request.url;
-    const time = new Date().getFullYear();
-    console.log(method,url,time);
-    // res.send('Testing')
-    next()
-}
+// app.use([logger, authorize])
+// api/home/about/products
+// app.use(express.static('./public'))
 
 app.get('/',logger,(req,res)=>{
 
     res.send('Home')
 })
 
-app.get('/about',(req,res)=>{
+app.get('/about', (req,res)=>{
     res.send('About')
+})
+
+app.get('/api/products', (req,res)=>{
+    res.send('Products')
+})
+
+app.get('/api/items',[logger,authorize], (req,res)=>{
+    console.log(req.user);
+    res.send('Items')
 })
 
 
