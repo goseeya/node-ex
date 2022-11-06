@@ -1,29 +1,19 @@
 const express = require('express')
 const app = express()
 
-const logger = require('./logger')
-const authorize = require('./authorize')
+let {people} = require('./data')
 
-// app.use([logger, authorize])
-// api/home/about/products
-// app.use(express.static('./public'))
+//static assets
+app.use(express.static('./methods-public'))
+//parse form data
+app.use(express.urlencoded({extended: false}))
 
-app.get('/',logger,(req,res)=>{
-
-    res.send('Home')
+app.get('/api/people',(req,res)=>{
+    res.status(200).json({success:true,data:people})
 })
 
-app.get('/about', (req,res)=>{
-    res.send('About')
-})
-
-app.get('/api/products', (req,res)=>{
-    res.send('Products')
-})
-
-app.get('/api/items',[logger,authorize], (req,res)=>{
-    console.log(req.user);
-    res.send('Items')
+app.post('./login',(req,res)=>{
+    res.send('POST')
 })
 
 
